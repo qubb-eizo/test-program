@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% load static %}
+{% url 'test:test_list' as testsuite_url %}
+{% url 'test:leader_list' as leaderboard_url %}
+{% url 'account:profile' as profile_url %}
+{% url 'account:login' as login_url %}
+{% url 'account:logout' as logout_url %}
+{% url 'account:register' as register_url %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top navbar-expand-lg navbar-dark bg-primary font-weight-bold ">
+        <div class="container">
+
+            <a class="navbar-brand" href="{% url 'index' %}">TMB</a>
+
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% if request.path == testsuite_url %} active {%endif%}">
+                        <a class="nav-link" href="{{ testsuite_url }}">Test Suites <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item {% if request.path == leaderboard_url %} active {%endif%}">
+                        <a class="nav-link" href="{{ leaderboard_url }}">Leader Board</a>
+                    </li>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'account:profile' %}">Profile ({{ user.username }})</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'account:register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:login' %}">Login</a>
+                    </li>
+                {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="p-1 m-1">
+            {% include 'includes/messages.html' %}
+        </div>
+        <div class="border rounded text-center p-3 m-3 bg-light text-dark" >
+            <h1>{% block title %}{{ title }}{% endblock %}</h1>
+        </div>
+        <div class="border border-dark rounded p-3 m-3">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{ block.super }}
+    Leader list
+{% endblock %}
+
+{% block content %}
+    {% if leader_list %}
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                  <th>№</th>
+                  <th>User name</th>
+                  <th>Average score</th>
+                  <th>Last run</th>
+                  <th>Percent of correct answers</th>
+                </tr>
+            </thead>
+            {% for user in leader_list %}
+
+                <tr>
+                  <td> {{ user.id }} </td>
+                  <td> {{ user.user.username }}</td>
+                  <td> {{ user.avr_score }}</td>
+                  <td> {{ user.user.test_last_run }}</td>
+                  <td> {{ user.percent_answers  }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="p-1 m-1">
+            {% include 'includes/pagination.html' %}
+        </div>
+
+
+    {% else %}
+        <p>Sorry, list is empty</p>
+    {% endif %}
+
+{% endblock %}
