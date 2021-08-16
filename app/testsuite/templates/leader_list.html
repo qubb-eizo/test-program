@@ -15,17 +15,17 @@
                   <th>User name</th>
                   <th>Average score</th>
                   <th>Last run</th>
-                  <th>Percent of correct answers</th>
+                  <th>Number of tests passed</th>
                 </tr>
             </thead>
             {% for user in leader_list %}
 
                 <tr>
                   <td> {{ user.id }} </td>
-                  <td> {{ user.user.username }}</td>
-                  <td> {{ user.avr_score }}</td>
-                  <td> {{ user.user.test_last_run }}</td>
-                  <td> {{ user.percent_answers  }}</td>
+                  <td> {{ user.username }}</td>
+                  <td> {{ user.update_score }}</td>
+                  <td> {{ user.test_last_run }}</td>
+                  <td> {{ user.num_runs  }}</td>
                 </tr>
             {% endfor %}
         </table>

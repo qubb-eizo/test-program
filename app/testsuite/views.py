@@ -8,6 +8,7 @@ from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic import ListView
 
+from account.models import User
 from testsuite.models import Test, TestResult, Question, Answers, TestResultDetails
 
 
@@ -24,15 +25,20 @@ class TestListView(LoginRequiredMixin, ListView):
 
 
 class LeaderBoardView(LoginRequiredMixin, ListView):
-    model = TestResult
+    model = User
     template_name = 'leader_list.html'
     context_object_name = 'leader_list'
     login_url = reverse_lazy('account:login')
     paginate_by = 10
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().order_by('-avr_score')
         return qs
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=None, **kwargs)
+        context['title'] = 'Leader Board'
+        return context
 
 
 class TestRunView(View):

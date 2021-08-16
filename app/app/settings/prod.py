@@ -6,4 +6,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-STATIC_ROOT = '/var/www/tmp/static_cdn'
+STATIC_ROOT = '/var/www/tmp/static'
+
+MEDIA_ROOT = '/var/www/tmp/media'

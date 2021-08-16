@@ -4,4 +4,6 @@ from app.settings.components.dev_tools import *
 
 DEBUG = True
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'cdn/static')

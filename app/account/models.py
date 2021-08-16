@@ -9,8 +9,15 @@ class User(AbstractUser):
     tests_list_passed = models.PositiveIntegerField(null=True, blank=True)
 
     def update_score(self):
-        self.avr_score = self.test_result.aggregate(points=Sum('avr_score'))
+        self.avr_score = self.test_result.aggregate(score=Sum('avr_score')).get('score')
+        return self.avr_score
 
     def test_last_run(self):
-        last_run = self.test_result.order_by('id').last()
-        return last_run.datetime_run
+        if self.test_result.count() != 0:
+            return self.test_result.last().datetime_run
+        else:
+            return "________"
+
+    def num_runs(self):
+        num_runs = self.test_result.count()
+        return num_runs
