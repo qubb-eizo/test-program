@@ -6,6 +6,7 @@
 {% url 'account:login' as login_url %}
 {% url 'account:logout' as logout_url %}
 {% url 'account:register' as register_url %}
+{% url 'account:contact_us' as contact_us %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -37,6 +38,9 @@
                         <a class="nav-link" href="{{ leaderboard_url }}">Leader Board</a>
                     </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account:contact_us' %}">Contact Us</a>
+                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
                         <img alt="picture" width="35" height="35" class="rounded-circle" src="{{ user.image.url }}">

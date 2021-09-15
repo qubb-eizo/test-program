@@ -99,6 +99,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SESSION_COOKIE_AGE = 2 * 3600
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'cdn/static')
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'cdn/static')]

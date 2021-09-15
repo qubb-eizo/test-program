@@ -137,6 +137,6 @@ FIXTURE_DIRS = (os.path.join(BASE_DIR, 'tests/fixtures'),)
 
 
 try:
-    from app.settings_local import *
+    from app22.settings_local import *
 except ImportError:
     pass
