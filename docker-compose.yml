@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  backend:
+    build: ./
+    container_name: backend
+    restart: always
+    command: python manage.py runserver 0:8005
+    ports:
+      - 8005:8005
+    volumes:
+      - static_content:/var/www/tmp
+      - ./app:/opt/project
+    env_file:
+      - ./app/app/settings/.env
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: "postgres:12"
+    container_name: postgresql
+    restart: always
+    env_file:
+      - ./app/app/settings/.env
+    volumes:
+      - pgdata:/var/lib/postgres/data
+
+  nginx:
+    image: nginx:1.18-alpine
+    container_name: nginx
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static_content:/var/www/tmp
+    ports:
+      - "85:85"
+      - "443:443"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata: {}
+  static_content: {}
+  media_content: {}

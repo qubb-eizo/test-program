@@ -49,7 +49,7 @@ class Test(models.Model):
 
 
 class Question(models.Model):
-    MIN_LIMIT = 3
+    MIN_LIMIT = 1
     MAX_LIMIT = 20
 
     test = models.ForeignKey(to=Test, related_name='questions', on_delete=models.CASCADE)

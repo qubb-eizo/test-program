@@ -1,9 +1,12 @@
-from app.settings.components.base import *
-from app.settings.components.database import *
-from app.settings.components.dev_tools import *
+import os
+
+from app.settings.components.dev_tools import * # noqa
+from app.settings.components.base import * # noqa
+# from app.settings.components.database import * # noqa
+from app.settings.components.email import * # noqa
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'localhost']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'cdn/static')
+STATIC_ROOT = os.path.join(os.path.dirname('cdn/static'))

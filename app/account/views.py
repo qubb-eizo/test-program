@@ -1,11 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView
-
-from account.forms import UserAccountRegistrationForm, UserAccountProfileForm
+from django.views.generic import CreateView, UpdateView, FormView
 from django.conf import settings
+
+from account.forms import UserAccountRegistrationForm, UserAccountProfileForm, ContactUs
 
 
 class CreateUserAccountView(CreateView):
@@ -30,7 +31,6 @@ class UserAccountLoginView(LoginView):
 
     def form_valid(self, form):
         result = super().form_valid(form)
-        # messages.success(self.request, "Great! You've just successfully logged in")
         return result
 
     def get_success_url(self):
@@ -55,3 +55,24 @@ class UserAccountUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('index')
+
+
+class ContactUsView(FormView):
+    template_name = 'contact_us.html'
+    extra_context = {'title': 'Send us a message'}
+    success_url = reverse_lazy('index')
+    form_class = ContactUs
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            send_mail(
+                subject=form.cleaned_data['subject'],
+                message=form.cleaned_data['message'],
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[settings.EMAIL_HOST_USER],
+                fail_silently=False,
+            )
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
