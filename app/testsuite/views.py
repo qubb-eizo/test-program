@@ -10,6 +10,7 @@ from django.views.generic import ListView
 
 from account.models import User
 from testsuite.models import Test, TestResult, Question, Answers, TestResultDetails
+from testsuite.tasks import run_slow
 
 
 class TestListView(LoginRequiredMixin, ListView):
@@ -140,3 +141,9 @@ class StartTestView(View):
                 'test_result': test_result
             },
         )
+
+
+def slow_func(request):
+    test = Test.objects.get(id=1)
+    run_slow.delay(1)
+    return HttpResponse('DONE!')

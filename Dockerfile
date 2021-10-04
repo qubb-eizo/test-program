@@ -6,8 +6,10 @@ WORKDIR /opt/project
 RUN apt-get update
 
 COPY app/ ./
+COPY commands/ ./
 COPY ./requirements.txt ./requirements.txt
+
 RUN pip3 install --upgrade pip
 RUN pip3 install -r ./requirements.txt
 
-CMD ["python", "manage.py", "runserver", "0:8005", "--settings=app.settings.dev"]
+CMD ["bash"]

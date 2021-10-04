@@ -6,16 +6,22 @@ services:
     build: ./
     container_name: backend
     restart: always
-    command: python manage.py runserver 0:8005
+    command: ./commands/${RUN_MODE}.sh
     ports:
-      - 8005:8005
+      - ${WSGI_PORT}:${WSGI_PORT}
+    environment:
+      - DJANGO_SETTINGS_MODULE=app.settings.${RUN_MODE}
     volumes:
       - static_content:/var/www/tmp
       - ./app:/opt/project
+      - ./commands:/opt/project/commands
+#    env_file:
+#      - ./app/app/settings/.env
     env_file:
-      - ./app/app/settings/.env
+      - .env
     depends_on:
       - postgresql
+      - celery
 
   postgresql:
     image: "postgres:12"
@@ -37,6 +43,40 @@ services:
       - "443:443"
     depends_on:
       - backend
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    hostname: ${RABBITMQ_HOST}
+    env_file: .env
+    container_name: rabbitmq
+    restart: always
+
+  celery:
+    env_file: .env
+    build: ./
+    container_name: celery
+    hostname: ${CELERY_HOST}
+    command: ./commands/start_celery.sh
+    restart: always
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ./app:/opt/project
+      - ./commands:/opt/project/commands
+
+  celerybeat:
+    env_file: .env
+    build: .
+    container_name: celerybeat
+    hostname: ${CELERY_HOST}
+    command: ./commands/start_celerybeat.sh
+    restart: always
+    depends_on:
+      - rabbitmq
+      - celery
+    volumes:
+      - ./app:/opt/project
+      - ./commands:/opt/project/commands
 
 volumes:
   pgdata: {}
